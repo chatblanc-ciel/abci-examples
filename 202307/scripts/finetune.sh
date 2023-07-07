@@ -6,7 +6,7 @@
 #$ -cwd
 
 source /etc/profile.d/modules.sh
-module load python/3.11 cuda/11.7 cudnn/8.6
+module load cuda/11.8 cudnn/8.9
 source .venv/bin/activate
 
 export HF_HOME=/scratch/$(whoami)/.cache/huggingface/
