@@ -5,6 +5,9 @@
 #$ -N finetune-deepspeed
 #$ -o logs/
 #$ -cwd
+#$ -m a
+#$ -m b
+#$ -m e
 
 source /etc/profile.d/modules.sh
 module load cuda/11.8 cudnn/8.9

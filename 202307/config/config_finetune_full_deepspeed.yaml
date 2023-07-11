@@ -21,7 +21,7 @@ training:
   save_steps: 100
   save_total_limit: 3
   deepspeed: ds_config/ds_config_zero3.json
-  report_to="wandb"
+  report_to: "wandb"
 
 data:
   train_file: data/jsquad-valid-v1.1.json
