@@ -71,10 +71,16 @@ def main(config_file: str, model_name: str = None):
     dataset = load_dataset(**config["data"])
 
     logger.info(f"load tokenizer")
-    tokenizer = transformers.AutoTokenizer.from_pretrained(model_name)
-    if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
-        logger.info(f"set pad_token to {tokenizer.pad_token}")
+    tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, use_fast=False)
+    # スペシャルトークンの確認
+    print(tokenizer.special_tokens_map)
+    print("bos_token :", tokenizer.bos_token, ",", tokenizer.bos_token_id)
+    print("eos_token :", tokenizer.eos_token, ",", tokenizer.eos_token_id)
+    print("unk_token :", tokenizer.unk_token, ",", tokenizer.unk_token_id)
+    print("pad_token :", tokenizer.pad_token, ",", tokenizer.pad_token_id)
+    #if tokenizer.pad_token is None:
+    #    tokenizer.pad_token = tokenizer.eos_token
+    #    logger.info(f"set pad_token to {tokenizer.pad_token}")
 
     logger.info(f"load model: {config['model']}")
     # torch_dtypeを文字列から型に変換しておく
@@ -117,6 +123,10 @@ def main(config_file: str, model_name: str = None):
     training_args = transformers.TrainingArguments(**config["training"])
     # warning が出るので、 use_cache = False としておく
     model.config.use_cache = False
+    # out of memory対策
+    model.gradient_checkpointing_enable()
+
+    # Training
     trainer = transformers.Trainer(
         model=model,
         tokenizer=tokenizer,

@@ -20,6 +20,7 @@ dependencies = [
     "deepspeed @ git+https://github.com/microsoft/DeepSpeed.git@3f5e4931098bf533f8217afb6d986c90f81aed80",
     "peft @ git+https://github.com/huggingface/peft.git@0b62b4378b4ce9367932c73540349da9a41bdea8",
     "transformers @ git+https://github.com/huggingface/transformers@de9255de27abfcae4a1f816b904915f0b1e23cd9",
+    "wandb>=0.15.5",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
