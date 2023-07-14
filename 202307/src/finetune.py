@@ -3,10 +3,10 @@ import json
 import logging
 import os
 import pathlib
-import pydoc
 import sys
 from itertools import chain
-
+import pydoc
+import deepspeed
 import datasets
 import fire
 import peft
@@ -75,6 +75,9 @@ def preprocess_cot(examples, tokenizer, block_size: int = 512, num_proc: int = 4
     return grouped
 
 def main(config_file: str, model_name: str = None):
+    # 分散処理用の初期設定
+    deepspeed.init_distributed()
+    
     # 設定ファイルの読み込み
     with open(config_file, "r") as i_:
         config = yaml.safe_load(i_)

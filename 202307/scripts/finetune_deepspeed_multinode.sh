@@ -17,7 +17,7 @@ source .venv/bin/activate
 export HF_HOME=/scratch/$(whoami)/.cache/huggingface/
 export SCRATCH_HOME=/scratch/$(whoami)
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
-export MASTER_ADDR=$HOSNAME
+export MASTER_ADDR=$HOSTNAME
 
 # set the wandb project where this run will be logged
 export WANDB_PROJECT="rinna"
