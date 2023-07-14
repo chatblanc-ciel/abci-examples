@@ -24,7 +24,7 @@ training:
   report_to: "wandb"
 
 data:
-  train_file: data/jsquad-valid-v1.1.json
+  train_file: data/CoTangent_ja.json
   valid_size: 0.1
 
 input_template: |-
