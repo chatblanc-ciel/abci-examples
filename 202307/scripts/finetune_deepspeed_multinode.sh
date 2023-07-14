@@ -17,6 +17,8 @@ source .venv/bin/activate
 export HF_HOME=/scratch/$(whoami)/.cache/huggingface/
 export SCRATCH_HOME=/scratch/$(whoami)
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+export MASTER_ADDR=$HOSNAME
+
 # set the wandb project where this run will be logged
 export WANDB_PROJECT="rinna"
 # save your trained model checkpoint to wandb
@@ -33,7 +35,7 @@ for l in `cat $SGE_JOB_HOSTLIST`; do echo $l slots=4; done > $hostfile
 trap "rm $hostfile" EXIT
 trap "trap - EXIT; rm $hostifle; exit -1" INT PIPE TERM
 
-MASTER_ADDR=$HOSNAME deepspeed \
+deepspeed \
   --master_addr $HOSTNAME \
   --hostfile $hostfile \
   --no_ssh_check \
