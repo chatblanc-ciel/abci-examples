@@ -21,6 +21,7 @@ dependencies = [
     "peft @ git+https://github.com/huggingface/peft.git@0b62b4378b4ce9367932c73540349da9a41bdea8",
     "transformers @ git+https://github.com/huggingface/transformers@de9255de27abfcae4a1f816b904915f0b1e23cd9",
     "wandb>=0.15.5",
+    "mpi4py>=3.1.4",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
