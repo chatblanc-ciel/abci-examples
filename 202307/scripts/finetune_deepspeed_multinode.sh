@@ -11,7 +11,7 @@
 #$ -m e
 
 source /etc/profile.d/modules.sh
-module load cuda/11.8 cudnn/8.9 nccl/2.17 hpcx/2.12
+module load cuda/11.8 cudnn/8.9 nccl/2.16 hpcx/2.12
 source .venv/bin/activate
 
 export HF_HOME=/scratch/$(whoami)/.cache/huggingface/
