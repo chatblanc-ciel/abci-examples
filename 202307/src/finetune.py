@@ -44,6 +44,35 @@ def preprocess(examples, tokenizer, input_template: str, block_size: int = 512, 
     grouped = tokenized.map(lambda x: group_texts(x, block_size), batched=True, num_proc=num_proc)
     return grouped
 
+# instructionからpromptを生成する
+def generate_prompt(data_point):
+    if len(data_point["input"]) != 0:
+        result = f"""### 指示:
+{data_point["instruction"]}
+
+### 入力:
+{data_point["input"]}
+
+### 回答:
+{data_point["output"]}"""
+    else:
+        result = f"""### 指示:
+{data_point["instruction"]}
+
+### 回答:
+{data_point["output"]}"""
+
+    # 改行→<NL>
+    result = result.replace('\n', '<NL>')
+    data_point["prompt"]=result
+    return data_point
+
+def preprocess_cot(examples, tokenizer, block_size: int = 512, num_proc: int = 4):
+    tokenized = examples.map(
+        lambda x: tokenizer(x["prompt"]), batched=True, num_proc=num_proc, remove_columns=examples["train"].features
+    )
+    grouped = tokenized.map(lambda x: group_texts(x, block_size), batched=True, num_proc=num_proc)
+    return grouped
 
 def main(config_file: str, model_name: str = None):
     # 設定ファイルの読み込み
@@ -116,7 +145,9 @@ def main(config_file: str, model_name: str = None):
     # データセットの前処理. 以下の形式に変換する
     # {'input_ids': [token1, token2, ...]}
     logger.info("convert datasets with input_template")
-    lm_dataset = preprocess(dataset, tokenizer, config["input_template"])
+    #lm_dataset = preprocess(dataset, tokenizer, config["input_template"])
+    dataset = dataset.map(generate_prompt)
+    lm_dataset = preprocess_cot(dataset, tokenizer)
     # data_collator では、訓練用にデータを加工する
     # DataCollatorForLanguageModeling では、'input_ids' を 'labels' に設定する
     data_collator = transformers.DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
